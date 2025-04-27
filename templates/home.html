@@ -1,0 +1,260 @@
+{% load static %}
+
+<!-- main/templates/main/home.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to InsightFlow</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        text-align: center;
+    }
+
+    p {
+        line-height: 1.8;
+    }
+
+    img {
+        width: 50%;
+        height: auto;
+    }
+    
+    .hero-content {
+        margin-left: 20px;
+        margin-top: 20px;
+        width: 30%;
+      
+    }
+
+    h1 {
+        color: #0000ff;
+        font-size: 2.5rem;
+    }
+    .hero-content p {
+        font-size: 1.2 rem;
+        color: #333;
+        line-height: 1.8;
+        margin-bottom: 20px;
+    }
+
+    #diagram {
+        margin-top: 150px;
+        float: right;
+        width: 40%;
+        padding: 30px 20px;
+        border-radius: 5px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .hero-content {
+        text-align: left;
+        width: 50%;
+        margin-top: 140px;
+        margin-left: 6px;
+        float: left;
+        
+    }
+
+    .navbar {
+        background-color:rgb(233, 237, 247);
+        color: #0000ff;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 25px;
+        font-size: 1.8rem;
+    }
+
+    .hero-buttons {
+        float: left;
+        margin-right: 20px;
+       
+    }
+    .btn.btn-light {
+        color: #0000ff;
+        background-color: white;
+        border: 1px #0000ff;
+        font-weight: lighter;
+        font-size: 1.2rem;
+        
+    }
+    .btn.btn-outline-secondary {
+        color: #0000ff;
+        background-color: white;
+        border: 1px  #0000ff;
+        font-weight: lighter;
+        font-size: 1.2rem;
+    }
+    .navbar-logo {
+        float: left;
+        margin-left: 0px;
+        height: 70px;
+        width: 70px;
+    }
+   
+    .nav-link {
+        color:rgb(13, 13, 14);
+        font-size: 1.2rem;
+        margin-right: 20px;
+        font-weight:lighter;
+        float:right;
+       
+    }
+    .navbar-nav {
+        float: right;
+        margin-right: 20px;
+    }
+
+    .AI-DRIVEN {
+        margin-top: 600px;
+        margin-left: 20px;
+        margin-right: 20px;
+        text-align: left;
+        height: 800px;
+    
+    }
+    .AI-chat-companion {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 20px;
+        background-color: white; /* Adjust as needed */
+    }
+    
+    .text-primary {
+        color: #0000ff;
+        font-size: 2.0rem;
+        text-align: center;
+    }
+   
+
+</style>
+<body>
+    <nav class="navbar">
+        <div class="navbar-logo">
+        <img src="{% static 'icon.jpg' %}" alt="logo">
+        </div>
+        <b> InsightFlow </b>
+    <div class="navbar-nav mx-auto">
+        <a class="nav-link" href="#24/7 Availability">24/7 Availability</a>
+        <a class="nav-link" href="#AI Memory Bank">AI Memory Bank</a>
+        <a class="nav-link" href="#AI chat companion">AI chat companion</a>
+        <a class="nav-link" href="#AI - Driven URL Explorer">AI - Driven URL Explorer</a>
+    </div>
+    
+       
+    </nav>
+        <section class="hero" style="background-color: white;">
+            <div class="hero-content">
+            <h1>Your gateway to intelligent insights</h1>
+            <p> InsightFlow is an AI-powered platform that transforms URLs into structured insights, 
+            enabling users to explore, analyze, and interact with online content efficiently. 
+            With its AI-Driven URL Explorer, it extracts and summarizes key information from any webpage,
+            while the AI Chat Companion allows users to engage in contextual conversations for deeper understanding.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="{% url 'login' %}" class="btn btn-light border rounded-pill text-primary me-2">Login | </a> 
+                <a href="{% url 'signup' %}" class="btn btn-outline-secondary rounded-pill">Signup</a>
+            </div>  
+
+            </div>
+            <div id="diagram">
+               <img src="{% static 'diagram.jpg' %}" alt="diagram">
+            </div>
+        </section>
+    <br><br>
+    <section id="AI - Driven URL Explorer" class="AI - Driven URL Explorer" style="background-color: white; width: 100%; height: 100vh;">
+        <div class="AI-DRIVEN" style="background-color: white;"><br>
+            <h2 class="text-primary"> AI - Driven URL Explorer</h2><br><br>
+            <img src="{% static 'urlexplorer.jpg' %}" alt="urlexplorer" style="width: 30%; height: 30%; float: center; margin-left: 60px;">
+            <img src="{% static 'url2.jpg' %}" alt="url2" style="width: 30%; height: 30%; float: center;">
+            <img src="{% static 'url3.jpg' %}" alt="url3" style="width: 30%; height: 30%; float: center;"><br><br><br>
+            <p class="">The AI-Driven URL Explorer is an intelligent web navigation tool that allows users to efficiently explore and extract valuable insights from any webpage. Unlike traditional search engines, this feature goes beyond simply displaying links—it analyzes web content, summarizes key information, and filters out irrelevant data.
+
+                With its dynamic question-answering capability, users can interact with the AI to extract specific insights from a webpage, making research and content discovery faster and more accurate. Whether it's summarizing an article, extracting relevant data, or answering user queries based on web content, the AI-Driven URL Explorer ensures precision and efficiency in real time.
+                
+                Additionally, this tool enhances user productivity by automating data extraction, eliminating the need for manual research and allowing users to focus on analysis and decision-making.
+                
+                Furthermore, the AI-Driven URL Explorer is designed with seamless integration capabilities, enabling users to incorporate its functionality into personal research workflows, business intelligence tools, and content curation platforms for enhanced productivity and automated information retrieval.        
+            </p>
+        </div>
+    </section>
+
+    <section id="AI chat companion" class="AI chat companion">
+        <div class="AI-chat-companion">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <img src="{% static 'chat.jpg' %}" alt="chat" style="width: 30%; height: auto; margin-right: 20px;">
+                <div style="width: 65%;">
+                    <h1 class="text-primary">AI Chat Companion</h1>
+                    <p class="mb-0">
+                        The AI Chat Companion is a state-of-the-art virtual assistant designed to revolutionize human-AI interactions through natural, intelligent, and highly engaging conversations. Powered by cutting-edge Natural Language Processing (NLP), it seamlessly understands user queries, interprets intent, and delivers context-aware, real-time responses with remarkable precision.
+                        <br><br>
+                        Unlike conventional chatbots, this dynamic AI assistant evolves with every interaction, adapting to user preferences, retaining contextual continuity, and offering deeply personalized experiences across conversations. Whether assisting with information retrieval, intelligent recommendations, task automation, or interactive discussions, it ensures an unparalleled level of engagement and responsiveness.
+                        <br><br>
+                        With its proactive learning capabilities and adaptive conversational intelligence, the AI Chat Companion not only enhances productivity and efficiency but also fosters more intuitive and meaningful interactions. Its advanced architecture enables integration across diverse platforms, making it a versatile, scalable, and indispensable digital companion for businesses, professionals, and everyday users.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="AI Memory Bank" class="AI Memory Bank" style="background-color: white; width: 100%; height: 100vh;">
+        <div class="AI Memory Bank" style="padding: 20px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="width: 55%;">
+                    <h1 class="text-primary">AI Memory Bank</h1>
+                    <p class="mb-0">
+                        The AI Memory Bank acts as a smart, AI-powered storage system designed to retain, organize, and retrieve important information efficiently. Instead of users having to remember past interactions or manually search for stored data, the AI Memory Bank automatically categorizes and indexes past insights, making it easily accessible whenever needed.
+                        <br><br>
+                        This feature enhances productivity by allowing users to save key information from conversations, web explorations, and past interactions. With its ability to recall relevant data upon request, it ensures a smooth and intelligent information management system that saves time and effort.
+                    </p>
+                </div>
+                <img src="{% static 'memory.jpg' %}" alt="memory" style="width: 30%; height: auto; margin-left: 20px; display: block;">
+            </div>
+        </div>
+    </section>
+
+    
+    <section id="24/7 Availability" class="24/7 Availability" style="background-color: white; width: 100%; height: 100vh;">
+        <div class="24/7 Availability" style="padding: 20px;">
+            <h2 class="text-primary"> 24/7 Availability</h2>
+            <img src="{% static 'time.jpg' %}" alt="chat" style="width: 20%; height: 20%; float: left; margin-left: 60px; margin-right: 60px;">
+            <p class="mb-0"><br><br>
+                InsightFlow is designed to provide continuous, uninterrupted AI-powered assistance, ensuring users have access to its features at any time of the day. Unlike human support systems that may have downtime, the AI-driven ecosystem runs 24/7, delivering instant responses, insights, and data retrieval whenever required.
+
+                This feature makes InsightFlow an ideal companion for researchers, professionals, businesses, and students, ensuring that users can explore web content, engage in AI conversations, and access stored knowledge round the clock.
+            </p>
+        </div>
+    </section>
+
+<!-- ======= Footer ======= -->
+<footer>
+    <div class="container">
+    <p>InsightFlow &copy; 2025</p>
+    </div>
+</footer><!-- End  Footer -->
+  
+<style>
+    footer {
+        background-color: #f8f9fa;
+        color: #0000ff;
+        text-align: center;
+        padding: 5px;
+        position: fixed;
+        width: 100%;
+    }
+</style>
+</body>
+</html>

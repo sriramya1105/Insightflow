@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Memory Bank</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .entry {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        .chat-history {
+            margin-left: 20px;
+            display: none;
+        }
+        .chat-turn {
+            margin-bottom: 10px;
+        }
+        .delete-btn {
+            background-color: red;
+            color: white;
+            padding: 5px 10px;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧠 AI Memory Bank</h1>
+
+    <div id="session">
+        {% for entry in sessions %}
+            <div class="entry" data-id="{{ entry.id }}">
+                <p><strong>Session ID:</strong> {{ entry.id }}</p>
+
+                <div class="chat-history" id="history-{{ entry.id }}">
+                    {% for his in history %}
+                        {% if his.session.id == entry.id %}
+                            <div class="chat-turn">
+                                <p><strong>You:</strong> {{ his.user_input }}</p>
+                                <p><strong>Bot:</strong> {{ his.response }}</p>
+                                <button class="delete-btn" data-history-id="{{ his.id }}">Delete</button>
+                                <hr>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+        {% empty %}
+            <p>No sessions available.</p>
+        {% endfor %}
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $('.entry').click(function () {
+                const sessionId = $(this).data('id');
+                $('.chat-history').hide(); // Hide all
+                $('#history-' + sessionId).toggle(); // Toggle clicked
+            });
+
+            // Delete button functionality
+            $('.delete-btn').click(function () {
+                const historyId = $(this).data('history-id');
+                
+                // Make AJAX request to delete the chat entry
+                $.ajax({
+                    url: '/delete_chat_turn/',  // URL for deletion (you will define this in Django)
+                    method: 'POST',
+                    data: {
+                        'history_id': historyId,
+                        'csrfmiddlewaretoken': '{{ csrf_token }}',  // Include CSRF token for security
+                    },
+                    success: function (response) {
+                        // On successful delete, remove the chat turn from the UI
+                        if (response.success) {
+                            $(this).closest('.chat-turn').remove();
+                        } else {
+                            alert("Failed to delete the chat.");
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

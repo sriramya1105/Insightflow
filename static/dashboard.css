@@ -1,0 +1,95 @@
+
+body {
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    background-color: #F8F8FF;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    color: #333;
+    padding-top: 20px; /* Added padding to the top */
+    box-sizing: border-box; /* Ensure padding is included in the height calculation */
+}
+.container {
+    border-radius: 60px;
+    padding: 70px; /* Reduced padding */
+    width: 100%;
+    max-width: 2000px;
+    text-align: center;
+    
+}
+h1 {
+    color: #1e88e5;
+    margin-bottom: 20px;
+}
+p {
+    font-size: 16px;
+    margin: 10px 0 15px; /* Reduced margin */
+}
+a {
+    display: block;
+    background-color:#1e88e5;
+    color: #fff;
+    padding: 10px 0; /* Reduced padding */
+    border-radius: 10px;
+    text-decoration: none;
+    margin: 8px 0;
+    box-shadow: 0 4px 10px rgba(30, 136, 229, 0.3);
+    transition: transform 0.3s ease, background 0.3s ease;
+}
+a:hover {
+    background-color: #1565c0;
+    transform: scale(1.05);
+}
+.feature {
+    background-color: #F8F8FF;
+    border-radius: 12px;
+    padding: 10px; /* Reduced padding */
+    margin-bottom: 10px; /* Reduced margin */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.feature img {
+    width: 20%; /* Reduced width */
+    border-radius: 10px;
+    margin-right: 10px; /* Reduced margin */
+}
+.feature-content {
+    flex: 1;
+    text-align: center; /* Centered text */
+}
+.footer {
+    margin-top: 10px; /* Reduced margin */
+    font-size: 14px;
+    color: #555;
+}
+
+
+
+.card {
+    flex: 1;         /* Ensures cards grow evenly */
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3); 
+    border-radius: 20px;
+    padding: 10px;
+    width: auto;
+    min-height: 400px !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card .card-bodyy {
+    padding: 5px;
+}
+
+.card img {
+    border-radius: 10px;
+    width: 100%;
+    max-height: 191px;
+}
+
+.card :hover {
+    transform: translateY(-10px);
+}

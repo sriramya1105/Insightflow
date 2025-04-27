@@ -1,0 +1,145 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Process URLs & Chat</title>
+    <link rel="stylesheet" href="{% static 'process_urls.css' %}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+</head>
+<body>
+    <div class="container">
+        <div class="left-section" id="leftSection">
+            <h1>Process URLs</h1>
+
+            <label for="urlCount">Select number of URLs:</label>
+            <select id="urlCount">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+
+            <form id="urlForm">
+                {% csrf_token %}
+                <div id="urlInputs">
+                    <label for="url1">URL 1:</label>
+                    <input type="text" name="urls" id="url1">
+                </div>
+                <button type="submit">Process</button>
+            </form>
+
+            <div id="urlMessage" class="response-message"></div>
+            <div class="loader" id="urlLoader"></div>
+        </div>
+
+        <div class="right-section" id="rightSection">
+            <h1>Ask Anything - Chat Mode</h1>
+
+            <div class="chat-container" id="chatBox"></div>
+
+            <form id="chatForm">
+                {% csrf_token %}
+                <input type="text" name="query" id="chatInput" placeholder="Ask a question..." autocomplete="off">
+                <button type="submit">Send</button>
+            </form>
+
+            <div class="loader" id="queryLoader"></div>
+        </div>
+    </div>
+
+    <a href="{% url 'dashboard' %}">Back to Dashboard</a>
+
+    <script>
+        $(document).ready(function() {
+
+            // Function to update URL inputs dynamically
+            function updateUrlInputs(count) {
+                var urlInputs = $("#urlInputs");
+                urlInputs.empty();
+                for (var i = 1; i <= count; i++) {
+                    urlInputs.append('<label for="url' + i + '">URL ' + i + ':</label>');
+                    urlInputs.append('<input type="text" name="urls" id="url' + i + '">');
+                }
+            }
+
+            $("#urlCount").change(function() {
+                var count = $(this).val();
+                updateUrlInputs(count);
+            });
+
+            // URL Form Submission
+            $("#urlForm").submit(function(event) {
+                event.preventDefault();
+                var valid = true;
+                $("#urlInputs input[type='text']").each(function() {
+                    if ($(this).val().trim() === "") {
+                        valid = false;
+                        return false;
+                    }
+                });
+
+                if (!valid) {
+                    $("#urlMessage").html("<p>Please enter the URL.</p>").addClass("error").removeClass("success");
+                    return;
+                }
+
+                $("#urlLoader").show();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'process_urls' %}",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $("#urlMessage").html("<p>URLs processed successfully!</p>").addClass("success").removeClass("error");
+                        $(".container").css("justify-content", "space-between");
+                        $("#rightSection").show();
+                    },
+                    error: function() {
+                        $("#urlMessage").html("<p>Error processing URLs.</p>").addClass("error").removeClass("success");
+                    },
+                    complete: function() {
+                        $("#urlLoader").hide();
+                    }
+                });
+            });
+
+            // Chat Form Submission
+            $("#chatForm").submit(function(event) {
+                event.preventDefault();
+                const query = $("#chatInput").val().trim();
+                if (!query) {
+                    $("#chatBox").append('<div class="bot-message error">Please enter a query.</div>');
+                    return;
+                }
+
+                $("#chatBox").append(`<div class="user-message">${query}</div>`);
+
+                $("#queryLoader").show();
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'process_urls' %}",
+                    data: $(this).serialize(),
+                    success: function(response) {
+                        $("#chatBox").append(`<div class="bot-message">${response.answer}</div>`);
+                        $("#chatBox").scrollTop($("#chatBox")[0].scrollHeight); // Auto-scroll to latest message
+                    },
+                    error: function() {
+                        $("#chatBox").append('<div class="bot-message error">Error processing query.</div>');
+                    },
+                    complete: function() {
+                        $("#queryLoader").hide();
+                    }
+                });
+
+                $("#chatInput").val(""); // Clear input after submission
+            });
+
+            // Initialize URL inputs
+            updateUrlInputs($("#urlCount").val());
+        });
+    </script>
+</body>
+</html>

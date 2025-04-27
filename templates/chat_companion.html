@@ -1,0 +1,280 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Companion</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: #f5f6fa;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            height: 100vh;
+        }
+        .sidebar {
+            width: 27%;
+            height: 100%;
+            background-color: #2980b9;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: fixed;
+            top: 20px;
+            left: 0;
+            height: 90%;
+            transition: width 0.3s ease;
+        }
+        .sidebar button {
+            background: #fff;
+            color: #2980b9;
+            border: none;
+            padding: 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        .sidebar button:hover {
+            background: #2473a6;
+            color: white;
+        }
+        .chat-container {
+            width: 70%;
+            margin-left: 30%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            height: 100%;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 18px rgba(44,62,80,0.12);
+            overflow: hidden;
+        }
+        .chat-history {
+            max-height: 420px;
+            overflow-y: auto;
+            margin-bottom: 22px;
+            padding: 0 2px;
+        }
+        .chat-block {
+            margin-bottom: 18px;
+        }
+        .chat-block .role-user {
+            color: #2980b9;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .chat-block .role-assistant {
+            color: #27ae60;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        .message {
+            padding: 9px 15px;
+            border-radius: 8px;
+            background: #eaeffa;
+            margin-bottom: 5px;
+            white-space: pre-line; /* Ensures clean line breaks */
+        }
+        .response {
+            background: #e8f7ee;
+        }
+        form.chat-form {
+            display: flex;
+            gap: 10px;
+        }
+        .chat-input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #d5d7de;
+            font-size: 1rem;
+        }
+        .send-btn {
+            background: #2980b9;
+            color: #fff;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background .25s;
+        }
+        .send-btn:hover {
+            background: #2473a6;
+        }
+        /* Custom Themes */
+        .theme-light1 .chat-container {
+            background: #fffbe6;
+            color: #333;
+        }
+        .theme-light2 .chat-container {
+            background: #d0f1f4;
+            color: #333;
+        }
+        .theme-light3 .chat-container {
+            background: #e0f7fa;
+            color: #333;
+        }
+        .theme-light4 .chat-container {
+            background: #fff0f0;
+            color: #333;
+        }
+        .theme-options {
+            display: none;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .theme-button-container {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2 style="text-align:center; font-size:1.5rem;">InsightFlow Chat Companion</h2>
+    <div class="theme-section">
+        <button id="theme-toggle">Theme</button>
+        <div class="theme-options" id="theme-options">
+            <button id="theme-light1">Light Theme 1</button>
+            <button id="theme-light2">Light Theme 2</button>
+            <button id="theme-light3">Light Theme 3</button>
+            <button id="theme-light4">Light Theme 4</button>
+        </div>
+    </div>
+    <button id="clear-chat">Clear Chat</button>
+    <button id="export-chat">Export Chat</button>
+</div>
+
+<div class="chat-container">
+    <h2 style="margin-bottom:18px;color:#2d3436;">💬 Chat Companion</h2>
+    <div class="chat-history" id="chat-history">
+        {% for item in chat_history %}
+            <div class="chat-block">
+                <div class="role-user">You:</div>
+                <div class="message">{{ item.query | linebreaks }}</div>
+                <div class="role-assistant">Assistant:</div>
+                <div class="message response">{{ item.response | linebreaks }}</div>
+            </div>
+        {% empty %}
+            <p style="color:#636e72;text-align:center;">No chat yet. Start the conversation!</p>
+        {% endfor %}
+    </div>
+    <form class="chat-form" id="chat-form">
+        {% csrf_token %}
+        <input type="text" name="query" id="chat-input" class="chat-input" placeholder="Type your message..." autocomplete="off" required>
+        <button type="submit" class="send-btn">Send</button>
+    </form>
+</div>
+
+<script>
+document.getElementById('chat-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const input = document.getElementById('chat-input');
+    const query = input.value.trim();
+    if (!query) return;
+    const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+    // Display user message instantly
+    const chatHistory = document.getElementById('chat-history');
+    const userBlock = document.createElement('div');
+    userBlock.className = 'chat-block';
+    userBlock.innerHTML = `
+      <div class="role-user">You:</div>
+      <div class="message">${escapeHtml(query)}</div>
+      <div class="role-assistant">Assistant:</div>
+      <div class="message response">...</div>
+    `;
+    chatHistory.appendChild(userBlock);
+    chatHistory.scrollTop = chatHistory.scrollHeight;
+
+    input.value = '';
+    input.focus();
+
+    // Send the message
+    const response = await fetch(window.location.href, {
+        method: 'POST',
+        headers: {
+            'X-CSRFToken': csrfToken,
+            'Accept': 'application/json'
+        },
+        body: new URLSearchParams({query})
+    });
+    if (response.ok) {
+        const data = await response.json();
+        userBlock.querySelector('.message.response').textContent = cleanResponse(data.response);
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    } else {
+        userBlock.querySelector('.message.response').textContent = '❌ There was an error. Please try again.';
+    }
+});
+
+// Clear Chat
+document.getElementById('clear-chat').addEventListener('click', function() {
+    document.getElementById('chat-history').innerHTML = '';
+});
+
+// Export Chat
+document.getElementById('export-chat').addEventListener('click', function() {
+    const chatHistory = document.getElementById('chat-history');
+    let chatContent = '';
+    chatHistory.querySelectorAll('.chat-block').forEach(block => {
+        const userMessage = block.querySelector('.message').textContent;
+        const assistantResponse = block.querySelector('.message.response').textContent;
+        chatContent += `You: ${userMessage}\nAssistant: ${assistantResponse}\n\n`;
+    });
+
+    const blob = new Blob([chatContent], { type: 'text/plain' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = 'chat_history.txt';
+    link.click();
+});
+
+// Toggle Theme Options
+document.getElementById('theme-toggle').addEventListener('click', function() {
+    const themeOptions = document.getElementById('theme-options');
+    themeOptions.style.display = themeOptions.style.display === 'none' ? 'flex' : 'none';
+});
+
+// Theme Buttons
+document.getElementById('theme-light1').addEventListener('click', function() {
+    document.body.className = 'theme-light1';
+});
+document.getElementById('theme-light2').addEventListener('click', function() {
+    document.body.className = 'theme-light2';
+});
+document.getElementById('theme-light3').addEventListener('click', function() {
+    document.body.className = 'theme-light3';
+});
+document.getElementById('theme-light4').addEventListener('click', function() {
+    document.body.className = 'theme-light4';
+});
+
+// Helper to escape HTML to prevent XSS
+function escapeHtml(text) {
+    const map = {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#039;'
+    };
+    return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+}
+
+// Function to clean response and remove unwanted symbols
+function cleanResponse(response) {
+    // Remove ** symbols, unwanted markdown, or any other unwanted characters
+    return response.replace(/\*\*(.*?)\*\*/g, '$1').replace(/_/g, '').trim();
+}
+</script>
+</body>
+</html>
+
