@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-ej&(^4@e4g2s4-v%_sq=836=zj*u)*n-@4+=5ykj2h2ns5p(-#
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['insightflow-gmqz.onrender.com']
 
 
 # Application definition
