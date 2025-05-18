@@ -8,8 +8,8 @@ import re
 from pydantic import BaseModel
 from langchain_groq import ChatGroq
 from langchain.text_splitter import RecursiveCharacterTextSplitter
-#from langchain.vectorstores import FAISS
-from langchain_community.vectorstores import FAISS
+from langchain.vectorstores import FAISS
+# from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain.schema import Document
 import os
@@ -184,7 +184,7 @@ def chat_companion(request):
         chat_session.save()
 
     # Fetch the last 10 chat history records for context
-    chat_history_qs = ChatHistory.objects.filter(user=request.user, session=chat_session).order_by('-timestamp')
+    chat_history_qs = ChatHistory.objects.filter(user=request.user,mode="chat_companion", session=chat_session).order_by('-timestamp')
     chat_history = list(reversed(chat_history_qs))  # Reverse to get chronological order
 
     response_text = ""
