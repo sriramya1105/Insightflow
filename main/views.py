@@ -25,7 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 # Initialize Groq LLM
-GROQ_API_KEY = "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"
+GROQ_API_KEY = "Enter Your API KEY"
 llm = ChatGroq(
     temperature=0,
     groq_api_key=GROQ_API_KEY,
