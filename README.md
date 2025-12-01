@@ -5,15 +5,7 @@ Designed with a ChatGPT-like interface and a smooth user experience.
 
 📸 Dashboard Preview
 
-After you upload your dashboard image inside:
-
-static/images/InsightFlow-Dashboard.png
-
 ![InsightFlow Dashboard](./static/dashboard.jpg)
-
-Add this in your README (already included below):
-
-
 ✨ Core Features
 🔗 URL Processing
 
