@@ -9,7 +9,7 @@ After you upload your dashboard image inside:
 
 static/images/InsightFlow-Dashboard.png
 
-![InsightFlow Dashboard](./static/diagram.jpg)
+![InsightFlow Dashboard](./static/dashboard.jpg)
 
 Add this in your README (already included below):
 
@@ -50,26 +50,6 @@ Minimal cards → Only Image + Heading
 Fetches real-time news
 
 Category filtering
-
-🧱 Project Structure
-
-Your project structure (matching screenshot):
-
-INSIGHTFLOW/
-│── .github/
-│── Insightflow/              # Django project folder
-│── main/                     # Main Django app
-│── static/
-│     └── images/             # Dashboard & other images here
-│── staticfiles/
-│── templates/                # HTML templates
-│── .gitattributes
-│── chat_history.json         # Local session chat storage
-│── db.sqlite3                # Database
-│── faiss_index.pkl           # Memory vector index
-│── manage.py
-│── README.md
-│── requirements.txt
 
 🔧 Tech Stack
 Backend
